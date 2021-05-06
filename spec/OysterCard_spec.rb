@@ -6,7 +6,17 @@ describe OysterCard do
 
   describe '#journey' do
     it "is not initially in journey" do
-      expect(subject.in_journey?) == false
+      expect(subject.in_journey) == false
+    end
+    it "has an empty list of journeys by default" do
+      expect(subject.journeys).to be_empty
+    end
+    let(:journey) { {entrystation: entrystation, exitstation: exitstation} }
+    it "stores a journey" do
+      subject.topup(10)
+      subject.touchin(entrystation)
+      subject.touchout(exitstation)
+      expect(subject.journeys).to include journey
     end
   end
 
@@ -16,11 +26,11 @@ describe OysterCard do
       subject.touchin(entrystation)
     end
     it "can touch in" do
-      expect(subject.in_journey?) == true
+      expect(subject.in_journey) == true
     end
-    it "stores the entry station" do
-      expect(subject.entrystation).to eq entrystation
-    end
+    #it "stores the entry station" do
+      #expect(subject.entrystation).to eq entrystation
+    #end
   end
 
   describe '#touchout' do
@@ -31,22 +41,22 @@ describe OysterCard do
     end
 
     it "can touchout" do
-      expect(subject.in_journey?) == false
+      expect(subject.in_journey) == false
     end
 
     it "deducts minimum charge on touch out" do
       expect { subject.touchout(exitstation) }.to change { subject.balance }.by(-OysterCard::MIN_CHARGE)
     end
 
-    it "forgets entry station on touchout" do
-      expect(subject.entrystation).to eq nil
-    end
+    #it "forgets entry station on touchout" do
+      #expect(subject.entrystation).to eq nil
+    #end
 
-    it "stores the exit station" do
-      expect(subject.exitstation).to eq exitstation
-    end
+    #it "stores the exit station" do
+      #expect(subject.exitstation).to eq exitstation
+    #end
   end
-  
+
   describe '#balance' do
     it "has a balance of 0" do
       expect(subject.balance).to eq(0)
@@ -56,6 +66,7 @@ describe OysterCard do
       expect { subject.touchin(entrystation) }.to raise_error "Balance too low"
     end
   end
+
   describe '#topup' do
     it { is_expected.to respond_to(:topup).with(1).argument }
     it "can add to the balance" do
