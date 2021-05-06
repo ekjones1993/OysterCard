@@ -5,12 +5,11 @@ class OysterCard
   attr_reader :balance
   attr_reader :journeys
   attr_reader :in_journey
-
+  
   def initialize
     @balance = 0
-    @journeys = {}
+    @journeys = [ ]
     @in_journey = false
-
   end
 
   def topup(money)
@@ -20,14 +19,23 @@ class OysterCard
 
   def touchin(entrystation)
     fail "Balance too low" if balance < MIN_BALANCE
-    @journeys[:entrystation] = entrystation
+    @journeys << {entrystation: entrystation}
     @in_journey = true
   end
 
   def touchout(exitstation)
     deduct(MIN_CHARGE)
-    @journeys[:exitstation] = exitstation
+    @journeys << {exitstation: exitstation}
     @in_journey = false
+  end
+
+  #def journey
+   # @journeys << {entrystation: @entrystation, exitstation: @exitstation}
+  #end
+  
+  def journey_list
+    merge = @journeys[0].merge(@journeys[1])
+    p merge
   end
 
   private
