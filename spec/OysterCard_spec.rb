@@ -1,6 +1,6 @@
 require 'OysterCard'
-
 describe OysterCard do
+
   let(:entrystation) { double :station }
   let(:exitstation) { double :station }
 
@@ -18,7 +18,6 @@ describe OysterCard do
     it "can touch in" do
       expect(subject.in_journey?) == true
     end
-
     it "stores the entry station" do
       expect(subject.entrystation).to eq entrystation
     end
@@ -47,7 +46,7 @@ describe OysterCard do
       expect(subject.exitstation).to eq exitstation
     end
   end
-
+  
   describe '#balance' do
     it "has a balance of 0" do
       expect(subject.balance).to eq(0)
@@ -57,14 +56,11 @@ describe OysterCard do
       expect { subject.touchin(entrystation) }.to raise_error "Balance too low"
     end
   end
-
   describe '#topup' do
     it { is_expected.to respond_to(:topup).with(1).argument }
-
     it "can add to the balance" do
       expect{ subject.topup(1) }.to change{ subject.balance }.by 1
     end
-
     it "will cause an error if at maximum balance" do
       max_balance = OysterCard::MAX_BALANCE
       subject.topup(max_balance)
