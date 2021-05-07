@@ -17,8 +17,6 @@ class OysterCard
     @balance += money
   end
 
-  
-
   def touchin(entrystation)
     fail "Balance too low" if balance < MIN_BALANCE
     @journeys << {entrystation: entrystation}
@@ -27,10 +25,8 @@ class OysterCard
 
   def touchout(exitstation)
     deduct(MIN_CHARGE)
-    @journeys << {exitstation: exitstation}
+    @journeys[-1][:exitstation] = exitstation
     @in_journey = false
-    @journeys[-2].merge!@journeys[-1]
-    @journeys.pop
   end
 
   #def journey
